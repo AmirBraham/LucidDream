@@ -1,0 +1,6 @@
+output/*
+.vscode
+__pycache__
+.env
+ffmpeg
+song.mp3
