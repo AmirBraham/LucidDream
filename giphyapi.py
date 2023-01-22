@@ -1,22 +1,14 @@
-import time
 import giphy_client
 from giphy_client.rest import ApiException
 from random import randint
-
 import urllib.request
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
+from utils import getGiphyApiKey
 
 
-api_instance = giphy_client.DefaultApi()
-
-
-
-def searchDownloadGif(q,limit=10,offset=0):
-    api_key = os.environ["giphy_api"]
-    if(api_key == None):
+def searchDownloadGif(q, limit=10, offset=0):
+    api_instance = giphy_client.DefaultApi()
+    api_key = getGiphyApiKey("")
+    if api_key == False:
         print("api key not valid")
         return
     try:
@@ -43,3 +35,7 @@ def extractGif(api_response):
     index = randint(0, len(processedData) - 1)
     originalGif = processedData[index].images.original
     urllib.request.urlretrieve(originalGif.url, "gifs/originalGif.gif")
+
+
+if __name__ == "__main__":
+    searchDownloadGif("smoke")

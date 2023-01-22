@@ -1,22 +1,15 @@
 from pysndfx import AudioEffectsChain
 import moviepy.editor as mp
-
 import os
 import math
 
 
 def slowReverb(audio_path, gif_path, slowRate=0.85):
     output_path = "output/slowed-reverb.mp4"
-
     if audio_path == "":
         raise Exception("Need to specify an audio file.")
     if gif_path == "":
         raise Exception("Need to specify a gif")
-        
-    try:
-        os.mkdir("output")
-    except FileExistsError:
-        pass
     fx = AudioEffectsChain().speed(slowRate).reverb()
     temp_audio_path = "output/temp.mp3"
     fx(audio_path, temp_audio_path)

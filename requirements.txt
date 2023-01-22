@@ -1,0 +1,4 @@
+giphy_client==1.0.0
+moviepy==1.0.3
+pysndfx==0.3.6
+python-dotenv==0.21.1

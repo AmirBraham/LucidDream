@@ -1,4 +1,5 @@
-output/*
+output
+gifs
 .vscode
 __pycache__
 .env

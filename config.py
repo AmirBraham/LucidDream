@@ -20,7 +20,6 @@ def checkEnvironmentVariables():
         f.writelines(["giphy_api="+giphyApikey,"\nyoutube_api="+youtubeApiKey,"\nspotify_api="+spotifyApiKey])
 
 def checkFFmpeg():
-    
     try:
         import subprocess
         result = subprocess.run(['ffmpeg','-formats'], check=True, stdout=subprocess.PIPE)
