@@ -17,7 +17,6 @@ def slowReverb(audio_path, gif_path, slowRate=0.85):
         os.mkdir("output")
     except FileExistsError:
         pass
-
     fx = AudioEffectsChain().speed(slowRate).reverb()
     temp_audio_path = "output/temp.mp3"
     fx(audio_path, temp_audio_path)
