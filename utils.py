@@ -19,7 +19,10 @@ def checkFFmpeg():
     return False
 
 
-
+def checkDATABASE():
+    assert os.path.isfile("./db") == True , "database file not found"
+    f = open("db","r")
+    return f.read()
 # API KEYS CHECK
 envPath = Path("./env")
 
