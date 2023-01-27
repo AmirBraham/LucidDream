@@ -16,6 +16,7 @@ def checkFFmpeg():
         return True 
     except:
         print("ffmpeg not found, exiting..")
+        
     return False
 
 
@@ -24,9 +25,9 @@ def checkDATABASE():
     f = open("db","r")
     return f.read()
 # API KEYS CHECK
-envPath = Path("./env")
+envPath = Path(".env")
 
-def checkEnvironmentVariables():
+def setupEnvironmentVariables():
     giphyApikey = ""
     spotifyApiKey = ""
     youtubeApiKey = ""
