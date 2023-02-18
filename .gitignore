@@ -5,3 +5,4 @@ __pycache__
 .env
 ffmpeg
 song.mp3
+client_secrets.json

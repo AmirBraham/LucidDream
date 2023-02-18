@@ -3,7 +3,8 @@ from Track import Track
 db = TinyDB('db.json')
 
 def addTrack(track:Track):
-    db.insert({"spotify_id":track.getSpotifyID,"name":track.getName,"artist":track.getArtist,"popularity_score":track.getPopularityScore})
+    if(not doesTrackExist(track)):
+        db.insert({"spotify_id":track.getSpotifyID,"name":track.getName,"artist":track.getArtist,"popularity_score":track.getPopularityScore})
 
 def setTrackYoutubeID(track:Track,youtubeID:str):
     # Add youtube video ID to Track
@@ -16,6 +17,13 @@ def setTrackUploadState(track:Track,state:bool):
         raise Exception("missing youtube id !")
     Tracks = Query()
     db.update({"uploaded":state},Tracks["youtube_id"] == track.getYoutubeID())
+
+
+def doesTrackExist(track:Track):
+    Track = Query()
+    result = db.search(Track["spotify_id"] ==track.getSpotifyID)
+    return  len(result) > 1
+
 def getNewTracks():
     # returns unploadedTracks
     Track = Query()

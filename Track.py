@@ -2,7 +2,6 @@ class Track:
     name = ""
     artist = ""
     spotify_id = ""
-    isAlreadyProcessed = False
     popularity_score = 0
     youtubeID = ""
 
@@ -27,8 +26,4 @@ class Track:
         return self.youtubeID
     def getPopularityScore(self) -> int:
         return self.popularity_score
-
-    def isAlreadyProcessed() -> bool:
-        isAlreadyProcessed = True
-        return isAlreadyProcessed
 
