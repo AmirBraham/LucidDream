@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 from pathlib import Path
 import subprocess
+from moviepy.editor import *
 
 
 
@@ -74,5 +75,12 @@ def setupDirectories():
     except FileExistsError:
         # directory already exists
         pass
+
+
+
+def MP4ToMP3(mp4, mp3):
+    FILETOCONVERT = AudioFileClip(mp4)
+    FILETOCONVERT.write_audiofile(mp3)
+    FILETOCONVERT.close()
 
 
