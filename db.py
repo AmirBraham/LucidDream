@@ -4,6 +4,7 @@ db = TinyDB('db.json')
 from typing import List 
 
 def addTrack(track:Track):
+
     if(not doesTrackExist(track)):
         db.insert({"spotify_id":track.getSpotifyID(),"name":track.getName(),"artist":track.getArtist(),"popularity_score":track.getPopularityScore(),"uploaded":track.uploaded,"youtube_id":""})
 
@@ -20,8 +21,9 @@ def setTrackUploadState(track,state:bool):
 
 def doesTrackExist(track:Track) -> bool:
     Track = Query()
+
     result = db.search(Track["spotify_id"] ==track.getSpotifyID())
-    return  len(result) >= 1
+    return len(result) >= 1
 
 def getNewTracks() -> List[Track]:
     # returns unploadedTracks

@@ -18,7 +18,6 @@ PLAYLIST_ID = "7Lg2IGZJGAvGYqqUEuvqkU"  # my playlist id
 
 print("fetching playlist songs")
 SONGS = fetchPlaylistSongs(PLAYLIST_ID)
-print(SONGS)
 addSongsToDB(SONGS)
 tracks = getNewTracks()
 if(len(tracks) == 0):
@@ -51,9 +50,10 @@ print("starting upload")
 
 songName = track["name"]+" - "+track["artist"]+ " (slowed & reverb)"
 privacyStatus = "public"
+description = ""
 setTrackYoutubeID(track=track,youtubeID=track_id)
 
-os.system(f'python upload_video.py --file "output/song.mp4" --title category="10" --title "{songName}" --privacyStatus="{privacyStatus}" ')
+os.system(f'python upload_video.py --file "output/song.mp4" --title category="10" --title "{songName}" --description={description} --privacyStatus="{privacyStatus}" ')
 
 print("done uploading , setting upload state to true")
 setTrackUploadState(track,True)

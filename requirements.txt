@@ -3,3 +3,6 @@ moviepy==1.0.3
 spotipy
 pytube
 youtube-search-python
+google-api-python-client
+tinydb
+httplib2

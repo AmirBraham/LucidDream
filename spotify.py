@@ -22,7 +22,7 @@ def fetchPlaylistSongs(PLAYLIST_ID):
             items = playlist.get("tracks").get("items")
             size = int(playlist["tracks"]["total"])
             for i in range(size):
-                track = items[0].get("track")
+                track = items[i].get("track")
                 artistName = track.get("artists")[0].get("name")
                 track = Track(
                     name=track["name"],
