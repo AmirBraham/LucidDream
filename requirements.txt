@@ -1,6 +1,7 @@
 giphy_client==1.0.0
 moviepy==1.0.3
 spotipy
+pysndfx
 pytube
 youtube-search-python
 google-api-python-client

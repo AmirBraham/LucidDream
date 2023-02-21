@@ -1,7 +1,9 @@
 from tinydb import TinyDB, Query
 from Track import Track
-db = TinyDB('db.json')
 from typing import List 
+
+
+db = TinyDB('db.json')
 
 def addTrack(track:Track):
 
