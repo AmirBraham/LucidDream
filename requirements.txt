@@ -7,3 +7,4 @@ youtube-search-python
 google-api-python-client
 tinydb
 httplib2
+dotenv
