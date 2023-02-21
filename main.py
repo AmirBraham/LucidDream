@@ -9,10 +9,9 @@ import os
 
 print("setting up directories")
 setupDirectories()
-setupEnvironmentVariables()
-
-
-assert checkFFmpeg()
+if not ("ON_HEROKU" in os.environ):
+    setupEnvironmentVariables()
+    assert checkFFmpeg()
 print("found ffmpeg , starting process")
 PLAYLIST_ID = "7Lg2IGZJGAvGYqqUEuvqkU"  # my playlist id
 

@@ -29,9 +29,12 @@ def checkDATABASE():
 envPath = Path(".env")
 
 def setupEnvironmentVariables():
+  
     giphyApikey = ""
     spotifyApiKey = ""
     youtubeApiKey = ""
+    
+
     if(not envPath.is_file()):
         print(".env does not exist , do you wish to create one ? y/n \n")
         choice = input("")
