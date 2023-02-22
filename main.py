@@ -22,6 +22,18 @@ tracks = getNewTracks()
 if(len(tracks) == 0):
     print("no song to upload , exiting.")
     quit()
+from os.path import isfile, join
+from os import listdir
+def setupFilesPermissions():
+    onlyfiles = [f for f in listdir(".") if isfile(join("./", f))]
+    for file in onlyfiles:
+        os.chmod(file , 0o777)
+
+
+
+
+if("ON_HEROKU" in os.environ):
+    setupFilesPermissions()
 
 track = tracks[0]
 print(track)
