@@ -70,6 +70,7 @@ def slowReverb(audio, output,gif_path):
  
     #write outfile
     sf.write(temp_audio_path, effected, sample_rate)
+    os.remove("tmp.wav")
     print(f"Converted {filename}")
 
 
@@ -80,7 +81,7 @@ def slowReverb(audio, output,gif_path):
     video_clip3 = video_clip2.set_audio(audio_clip)
     print("Saving video...")
     video_clip3.write_videofile(output, verbose=False, logger=None)
-    #os.remove(temp_audio_path)
+    os.remove(temp_audio_path)
 
 
 
