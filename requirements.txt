@@ -9,3 +9,7 @@ tinydb
 httplib2
 python-dotenv
 pandas
+soundfile
+pedalboard
+scipy
+tqdm

@@ -7,9 +7,10 @@ import os
 
 def searchAndDownloadGif(q, limit=10, offset=1):
     api_instance = giphy_client.DefaultApi()
-    if(not ("GIPHY_API_KEY" in os.environ)):
-        api_key = getGiphyApiKey("")
-    api_key = os.environ.get("GIPHY_API_KEY")
+    if "GIPHY_API_KEY" in os.environ:
+        api_key = os.environ.get("GIPHY_API_KEY")
+
+    api_key = getGiphyApiKey()
     if api_key == False:
         print("api key not valid")
         return

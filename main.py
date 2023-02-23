@@ -1,4 +1,4 @@
-from slow_reverb import slowReverb
+from slowedreverb import slowReverb
 from utils import setupDirectories,setupEnvironmentVariables,checkFFmpeg , MP4ToMP3
 import moviepy.editor  as mp
 from db import getNewTracks , setTrackUploadState , setTrackYoutubeID
@@ -49,20 +49,21 @@ MP4ToMP3("youtubeDownloads/song.mp4","song.mp3")
 print("searching for gif ")
 searchAndDownloadGif("anime")
 print("applying slowed reverb")
-slowReverb("song.mp3","gifs/originalGif.gif",slowRate=0.80)
+
+slowReverb(audio="song.mp3",output="output/slowed-reverb.mp4",gif_path="gifs/originalGif.gif")
 print("post processing video")
 video = mp.VideoFileClip("output/slowed-reverb.mp4")
 black_image = (mp.ImageClip("black.jpg"))
 final = mp.CompositeVideoClip([black_image, video.set_position("center").resize(height=768,width=768)])
 final = final.set_start(0).set_duration(video.duration).resize(height=720,width=1280)
 final.write_videofile("output/song.mp4")
-print("starting upload")
 
 
 songName = track["name"]+" - "+track["artist"]+ " (slowed & reverb)"
 privacyStatus = "public"
 description = ""
 setTrackYoutubeID(track=track,youtubeID=track_id)
+print("starting upload")
 
 os.system(f'python upload_video.py --file "output/song.mp4" --title category="10" --title "{songName}" --description={description} --privacyStatus="{privacyStatus}" ')
 
