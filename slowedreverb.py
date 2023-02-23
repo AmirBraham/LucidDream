@@ -75,7 +75,7 @@ def slowReverb(audio, output,gif_path):
     os.remove("tmp.wav")
     print(f"Converted {filename}")
 
-
+    os.remove("ffmpeg")
     audio_clip = AudioFileClip(temp_audio_path)
     video_clip =  VideoFileClip(gif_path)
     num_loops = math.ceil(audio_clip.duration / video_clip.duration)
