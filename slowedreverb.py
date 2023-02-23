@@ -43,11 +43,13 @@ def slowReverb(audio, output,gif_path):
     filename = audio
     temp_audio_path = "output/song.wav"
 
+
     if '.wav' not in audio:
         print('Audio needs to be .wav! Converting...')
         sp.call(f'ffmpeg -y -i "{audio}" tmp.wav', shell = True)
+        os.remove(audio)
         audio = 'tmp.wav'
-        
+    
     audio, sample_rate = sf.read(audio)
     slowfactor = 0.08
     room_size = 0.75
@@ -81,6 +83,7 @@ def slowReverb(audio, output,gif_path):
     video_clip3 = video_clip2.set_audio(audio_clip)
     print("Saving video...")
     video_clip3.write_videofile(output, verbose=False, logger=None)
+    os.remove(gif_path) 
     os.remove(temp_audio_path)
 
 
