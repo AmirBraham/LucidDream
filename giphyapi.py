@@ -40,8 +40,6 @@ def extractGif(api_response):
     urllib.request.urlretrieve(originalGif.url, "originalGif.gif")
 
 
-
-
 THEMES = ["chill anime","anime sad"]
 
 if __name__ == "__main__":
