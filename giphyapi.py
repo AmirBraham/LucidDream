@@ -37,7 +37,7 @@ def extractGif(api_response):
         return
     index = randint(0, len(processedData) - 1)
     originalGif = processedData[index].images.original
-    urllib.request.urlretrieve(originalGif.url, "gifs/originalGif.gif")
+    urllib.request.urlretrieve(originalGif.url, "originalGif.gif")
 
 
 

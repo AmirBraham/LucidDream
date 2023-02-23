@@ -50,7 +50,7 @@ print("searching for gif ")
 searchAndDownloadGif("anime")
 print("applying slowed reverb")
 
-slowReverb(audio="song.mp3",output="output/slowed-reverb.mp4",gif_path="gifs/originalGif.gif")
+slowReverb(audio="song.mp3",output="output/slowed-reverb.mp4",gif_path="originalGif.gif")
 print("post processing video")
 video = mp.VideoFileClip("output/slowed-reverb.mp4")
 black_image = (mp.ImageClip("black.jpg"))
