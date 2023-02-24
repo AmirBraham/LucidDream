@@ -21,7 +21,6 @@ def Search(title:Track,i):
 def Download(link,title):
     try:
         youtubeObject = YouTube(link)
-        print(youtubeObject)
         youtubeObject = youtubeObject.streams.get_audio_only()
         youtubeObject.download("youtubeDownloads","song.mp4")
     except:

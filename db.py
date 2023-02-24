@@ -6,7 +6,6 @@ from typing import List
 db = TinyDB('db.json')
 
 def addTrack(track:Track):
-
     if(not doesTrackExist(track)):
         db.insert({"spotify_id":track.getSpotifyID(),"name":track.getName(),"artist":track.getArtist(),"popularity_score":track.getPopularityScore(),"uploaded":track.uploaded,"youtube_id":""})
 
