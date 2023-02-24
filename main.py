@@ -53,7 +53,7 @@ print("applying slowed reverb")
 
 print("post processing video")
 
-slowReverb(audio="song.mp3",output="output/slowed-reverb.mp4",gif_path="./originalGif.gif")
+slowReverb(audio="song.mp3",output="output/slowed-reverb.mp4",gif_path="originalGif.gif")
 
 
 
