@@ -55,7 +55,7 @@ print("post processing video")
 video = mp.VideoFileClip("output/slowed-reverb.mp4")
 black_image = (mp.ImageClip("black.jpg"))
 final = mp.CompositeVideoClip([black_image, video.set_position("center").resize(height=768,width=768)])
-final = final.set_start(0).set_duration(video.duration).resize(height=720,width=1280)
+final = final.set_start(0).set_duration(video.duration).resize(height=480,width=854)
 final.write_videofile("output/song.mp4")
 
 os.remove("ffmpeg")

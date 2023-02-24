@@ -82,6 +82,7 @@ def slowReverb(audio, output,gif_path):
     video_clip3.write_videofile(output, verbose=False, logger=None)
     os.remove(gif_path) 
     os.remove(temp_audio_path)
+    os.remove("tmp.wav")
 
 
 
