@@ -66,7 +66,7 @@ description = ""
 setTrackYoutubeID(track=track,youtubeID=track_id)
 print("starting upload")
 
-os.system(f'python upload_video.py --file "./output/slowed-reverb.mp4"  category="10" --title "{songName}" --description={description} --privacyStatus="{privacyStatus}" ')
+os.system(f'python upload_video.py --file "./output/slowed-reverb.mp4"  --category="10" --title "{songName}" --description={description} --privacyStatus="{privacyStatus}" ')
 
 print("done uploading , setting upload state to true")
 setTrackUploadState(track,True)
