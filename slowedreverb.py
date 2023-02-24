@@ -68,7 +68,7 @@ def gifToImages(gif_path):
     truncate('gifs')
    
 
-    for frame in range(0,imageObject.n_frames):
+    for frame in range(1,imageObject.n_frames):
 
         imageObject.seek(frame)
         im_new = add_margin(imageObject , top=50,bottom=50,right=100,left=100 ,color=(0, 0, 0))
@@ -113,9 +113,6 @@ def slowReverb(audio, output,gif_path):
     sf.write(temp_audio_path, effected, sample_rate)
     print(f"Converted {filename}")
     audio_clip = AudioFileClip(temp_audio_path)
-       
-
-    
     
     video_clip =  ImageSequenceClip ("gifs",fps=5)
     num_loops = math.ceil(audio_clip.duration / video_clip.duration)
