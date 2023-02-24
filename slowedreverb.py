@@ -123,7 +123,6 @@ def slowReverb(audio, output,gif_path):
     audio_clip.close()
     video_clip.close()
     video_clip2.close()
-    os.remove(gif_path) 
     os.remove(temp_audio_path)
     os.remove("tmp.wav")
     return video_clip3
