@@ -85,5 +85,7 @@ def MP4ToMP3(mp4, mp3):
     FILETOCONVERT = AudioFileClip(mp4)
     FILETOCONVERT.write_audiofile(mp3)
     FILETOCONVERT.close()
+    os.remove(mp4)
+
 
 
