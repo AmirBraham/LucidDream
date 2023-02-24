@@ -53,7 +53,7 @@ print("applying slowed reverb")
 
 print("post processing video")
 
-slowReverb(audio="song.mp3",output="output/slowed-reverb.mp4",gif_path="./originalGif.gif")
+slowReverb(audio="./song.mp3",output="./output/slowed-reverb.mp4",gif_path="./originalGif.gif")
 
 
 
@@ -66,7 +66,7 @@ description = ""
 setTrackYoutubeID(track=track,youtubeID=track_id)
 print("starting upload")
 
-os.system(f'python upload_video.py --file "output/song.mp4" --title category="10" --title "{songName}" --description={description} --privacyStatus="{privacyStatus}" ')
+os.system(f'python upload_video.py --file "./output/song.mp4" --title category="10" --title "{songName}" --description={description} --privacyStatus="{privacyStatus}" ')
 
 print("done uploading , setting upload state to true")
 setTrackUploadState(track,True)
