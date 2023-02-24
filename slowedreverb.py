@@ -72,7 +72,6 @@ def slowReverb(audio, output,gif_path):
  
     #write outfile
     sf.write(temp_audio_path, effected, sample_rate)
-    os.remove("tmp.wav")
     print(f"Converted {filename}")
 
     os.remove("ffmpeg")
