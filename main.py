@@ -38,13 +38,13 @@ if("ON_HEROKU" in os.environ):
 
 track = tracks[0]
 print(track)
-track_link , track_id = Search(track["name"] + " " + track["artist"])
+track_link , track_id = Search(track["name"] + " " + track["artist"],0)
 if(track_link == ""):
     print("can't find youtube link , exiting.")
     quit()
 print("downloading track from youtube")
 
-Download(track_link)
+Download(track_link,title=track["name"] + " " + track["artist"])
 print("converting to mp3")
 MP4ToMP3("youtubeDownloads/song.mp4","song.mp3")
 print("searching for gif ")
