@@ -58,9 +58,7 @@ slowReverb(audio="song.mp3",output="output/slowed-reverb.mp4",gif_path="./origin
 
 
 
-from os import path
-if path.isfile("ffmpeg"):
-    os.remove("ffmpeg")
+
 songName = track["name"]+" - "+track["artist"]+ " (slowed & reverb)"
 privacyStatus = "public"
 description = ""

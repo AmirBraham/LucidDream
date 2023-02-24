@@ -14,4 +14,4 @@ pedalboard
 scipy
 tqdm
 numpy
-opencv-python
+opencv-python-headless
