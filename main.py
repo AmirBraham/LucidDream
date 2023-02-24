@@ -24,6 +24,7 @@ if(len(tracks) == 0):
     quit()
 from os.path import isfile, join
 from os import listdir
+import cv2
 def setupFilesPermissions():
     onlyfiles = [f for f in listdir(".") if isfile(join("./", f))]
     for file in onlyfiles:
@@ -50,22 +51,24 @@ print("searching for gif ")
 searchAndDownloadGif("anime")
 print("applying slowed reverb")
 
-slowReverb(audio="song.mp3",output="output/slowed-reverb.mp4",gif_path="originalGif.gif")
 print("post processing video")
-video = mp.VideoFileClip("output/slowed-reverb.mp4")
-black_image = (mp.ImageClip("black.jpg"))
-final = mp.CompositeVideoClip([black_image, video.set_position("center").resize(height=768,width=768)])
-final = final.set_start(0).set_duration(video.duration).resize(height=480,width=854)
-final.write_videofile("output/song.mp4")
 
-os.remove("ffmpeg")
+slowReverb(audio="song.mp3",output="output/slowed-reverb.mp4",gif_path="./originalGif.gif")
+
+
+
+
+from os import path
+if path.isfile("ffmpeg"):
+    os.remove("ffmpeg")
 songName = track["name"]+" - "+track["artist"]+ " (slowed & reverb)"
 privacyStatus = "public"
 description = ""
+
 setTrackYoutubeID(track=track,youtubeID=track_id)
 print("starting upload")
 
-os.system(f'python upload_video.py --file "output/song.mp4" --title category="10" --title "{songName}" --description={description} --privacyStatus="{privacyStatus}" ')
+#os.system(f'python upload_video.py --file "output/song.mp4" --title category="10" --title "{songName}" --description={description} --privacyStatus="{privacyStatus}" ')
 
 print("done uploading , setting upload state to true")
-setTrackUploadState(track,True)
+#setTrackUploadState(track,True)

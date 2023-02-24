@@ -7,11 +7,18 @@ from pedalboard.io import AudioFile
 from scipy.io.wavfile import read as read_wav
 import moviepy as mp
 import sys
+from pathlib import Path
+from PIL import Image
+from math import ceil
 import math
+import os
+import glob
 from tqdm import tqdm
 from moviepy.video.io import VideoFileClip
 from moviepy.editor import *  # Quick and dirty
 import numpy as np
+from PIL import Image
+from PIL import GifImagePlugin
 BUFFER_SIZE_SAMPLES = 1024 * 16
 NOISE_FLOOR = 1e-4
 
@@ -37,12 +44,44 @@ def get_num_frames(f: sf.SoundFile) -> int:
 
 
 
+def add_margin(pil_img, top, right, bottom, left, color):
+    width, height = pil_img.size
+    new_width = width + right + left
+    new_height = height + top + bottom
+    result = Image.new(pil_img.mode, (new_width, new_height), color)
+    result.paste(pil_img, (left, top))
+    return result
+def gifToImages(gif_path):
+
+    imageObject = Image.open(gif_path)
+    print(imageObject.is_animated)
+    print(imageObject.n_frames)
+    imageObject.resize((250,250))
+    # Display individual frames from the loaded animated GIF file
+    
+
+    def truncate(path):
+        files = glob.glob(path+'/*.*')
+        for f in files:
+            os.remove(f)
+
+    truncate('gifs')
+   
+
+    for frame in range(0,imageObject.n_frames):
+
+        imageObject.seek(frame)
+        im_new = add_margin(imageObject , top=50,bottom=50,right=100,left=100 ,color=(0, 0, 0))
+        im_new.resize((450,350))
+        im_new.save("gifs/"+str(frame)+".png")
+        
+
 
 
 def slowReverb(audio, output,gif_path):
     filename = audio
     temp_audio_path = "output/song.wav"
-
+    gifToImages(gif_path)
 
     if '.wav' not in audio:
         print('Audio needs to be .wav! Converting...')
@@ -74,15 +113,24 @@ def slowReverb(audio, output,gif_path):
     sf.write(temp_audio_path, effected, sample_rate)
     print(f"Converted {filename}")
     audio_clip = AudioFileClip(temp_audio_path)
-    video_clip =  VideoFileClip(gif_path)
+       
+
+    
+    
+    video_clip =  ImageSequenceClip ("gifs",fps=5)
     num_loops = math.ceil(audio_clip.duration / video_clip.duration)
     video_clip2 = video_clip.loop(n=num_loops)
     video_clip3 = video_clip2.set_audio(audio_clip)
     print("Saving video...")
-    video_clip3.write_videofile(output, verbose=False, logger=None)
+    video_clip3.write_videofile(output, fps=5 ,verbose=False, logger=None)
+    audio_clip.close()
+    video_clip.close()
+    video_clip2.close()
     os.remove(gif_path) 
     os.remove(temp_audio_path)
     os.remove("tmp.wav")
+    return video_clip3
+   
 
 
 

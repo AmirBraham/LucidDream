@@ -13,3 +13,5 @@ soundfile
 pedalboard
 scipy
 tqdm
+numpy
+opencv-python
