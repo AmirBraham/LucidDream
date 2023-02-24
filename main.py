@@ -58,7 +58,7 @@ final = mp.CompositeVideoClip([black_image, video.set_position("center").resize(
 final = final.set_start(0).set_duration(video.duration).resize(height=720,width=1280)
 final.write_videofile("output/song.mp4")
 
-
+os.remove("ffmpeg")
 songName = track["name"]+" - "+track["artist"]+ " (slowed & reverb)"
 privacyStatus = "public"
 description = ""
