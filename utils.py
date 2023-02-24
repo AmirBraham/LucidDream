@@ -79,7 +79,16 @@ def setupDirectories():
         # directory already exists
         pass
 
-
+import json
+def generateYoutubeClientSecret():
+    f = open("client_secrets.json")
+    data = json.load(f)
+    if "ON_HEROKU" in os.environ:
+        data["web"]["client_secret"] = os.environ.get("YOUTUBE_SECRET")
+    with open("client_secrets.json", "w") as outfile:
+        outfile.write(json.dumps(data))
+     
+    f.close()
 
 def MP4ToMP3(mp4, mp3):
     FILETOCONVERT = AudioFileClip(mp4)
@@ -87,5 +96,6 @@ def MP4ToMP3(mp4, mp3):
     FILETOCONVERT.close()
     os.remove(mp4)
 
-
+if __name__ == "__main__":
+    generateYoutubeClientSecret()
 
