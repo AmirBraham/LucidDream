@@ -15,6 +15,14 @@
             "popularity_score": 58,
             "uploaded": true,
             "youtube_id": ""
+        },
+        "2": {
+            "spotify_id": "6jRq8gaZhMUyy5RclRPcAf",
+            "name": "hot girl bummer",
+            "artist": "blackbear",
+            "popularity_score": 75,
+            "uploaded": false,
+            "youtube_id": "yMlKJGKyoCo"
         }
     }
 }

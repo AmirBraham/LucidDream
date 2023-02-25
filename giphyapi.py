@@ -5,6 +5,7 @@ import urllib.request
 from utils import getGiphyApiKey
 import os
 
+
 def searchAndDownloadGif(q, limit=10, offset=1):
     api_instance = giphy_client.DefaultApi()
     if "GIPHY_API_KEY" in os.environ:
@@ -40,7 +41,7 @@ def extractGif(api_response):
     urllib.request.urlretrieve(originalGif.url, "originalGif.gif")
 
 
-THEMES = ["chill anime","anime sad"]
+THEMES = ["chill anime", "anime sad"]
 
 if __name__ == "__main__":
     searchAndDownloadGif("anime")

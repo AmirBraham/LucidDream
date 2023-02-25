@@ -11,9 +11,9 @@ def fetchPlaylistSongs(PLAYLIST_ID):
     CLIENT_ID = "690df2c806074798a21b1c95eaa30c99"
     spotifyApiKey = getSpotifyApiKey("")
     sp = spotipy.Spotify(
-    client_credentials_manager=SpotifyClientCredentials(
-        client_id=CLIENT_ID, client_secret=spotifyApiKey
-    )
+        client_credentials_manager=SpotifyClientCredentials(
+            client_id=CLIENT_ID, client_secret=spotifyApiKey
+        )
     )
     SONGS = []
     playlist = sp.playlist(PLAYLIST_ID)
@@ -27,17 +27,17 @@ def fetchPlaylistSongs(PLAYLIST_ID):
                 track = Track(
                     name=track["name"],
                     artist=artistName,
-                    spotify_id= track["id"],
+                    spotify_id=track["id"],
                     youtube_id="",
-                    popularity_score= track["popularity"],
-                    uploaded=False
+                    popularity_score=track["popularity"],
+                    uploaded=False,
                 )
                 SONGS.append(track)
-            
+
             if playlist.get("tracks").get("next") == None:
                 break
             playlist["tracks"] = playlist.get("tracks").get("next")
-        if playlist.get("next")== None:
+        if playlist.get("next") == None:
             break
         playlist = playlist.get("next")
     return SONGS
@@ -46,6 +46,7 @@ def fetchPlaylistSongs(PLAYLIST_ID):
 def addSongsToDB(songs: list) -> None:
     for song in songs:
         addTrack(song)
+
 
 if __name__ == "__main__":
     songs = fetchPlaylistSongs("7Lg2IGZJGAvGYqqUEuvqkU")

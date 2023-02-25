@@ -6,7 +6,9 @@ class Track:
     youtube_id = ""
     uploaded = False
 
-    def __init__(self, name, artist, spotify_id, youtube_id , popularity_score,uploaded=False) -> None:
+    def __init__(
+        self, name, artist, spotify_id, youtube_id, popularity_score, uploaded=False
+    ) -> None:
         self.name = name
         self.artist = artist
         self.spotify_id = spotify_id
@@ -23,10 +25,11 @@ class Track:
     def getSpotifyID(self) -> str:
         return self.spotify_id
 
-    def setYoutubeID(self,youtube_id) -> None:
+    def setYoutubeID(self, youtube_id) -> None:
         self.youtube_id = youtube_id
+
     def getYoutubeID(self) -> str:
         return self.youtube_id
+
     def getPopularityScore(self) -> int:
         return self.popularity_score
-
