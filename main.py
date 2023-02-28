@@ -1,12 +1,11 @@
 from slowedreverb import slowReverb
 from utils import setupDirectories, setupEnvironmentVariables, checkFFmpeg, MP4ToMP3
-from db import getNewTracks, setTrackUploadState, setTrackYoutubeID , updateDB
+from db import getNewTracks, setTrackUploadState, setTrackYoutubeID, updateDB
 from spotify import fetchPlaylistSongs, addSongsToDB
 from youtube import Download, Search
 from giphyapi import searchAndDownloadGif
 import os
 from os.path import isfile, join
-
 
 
 updateDB()
@@ -25,6 +24,7 @@ tracks = getNewTracks()
 if len(tracks) == 0:
     print("no song to upload , exiting.")
     quit()
+
 
 def setupFilesPermissions():
     onlyfiles = [f for f in os.listdir(".") if isfile(join("./", f))]
@@ -67,17 +67,17 @@ print("starting upload")
 os.system(
     f'python upload_video.py --file "./output/slowed-reverb.mp4"  --category="10" --title "{songName}" --description={description} --privacyStatus="{privacyStatus}" '
 )
-
-print("done uploading , setting upload state to true")
-setTrackUploadState(track, True)
-
-print("Done !  added the following track : \n")
-
-print(f"""
-        Track Details : \n
-        Name : {track["name"]} \n
-        Artist : {track["artist"]} \n
-        Youtube link : https://www.youtube.com/watch?v={track["youtube_id"]} \n
-        Spotify Link : https://open.spotify.com/track/{track["spotify_id"]} \n
-        Popularity Score : {track["popularity_score"]}
-        """)
+uploadState = setTrackUploadState(track, True)
+if uploadState:
+    print("done uploading , setting upload state to true")
+    print("Done !  added the following track : \n")
+    print(
+        f"""
+            Track Details : \n
+            Name : {track["name"]} \n
+            Artist : {track["artist"]} \n
+            Youtube link : https://www.youtube.com/watch?v={track["youtube_id"]} \n
+            Spotify Link : https://open.spotify.com/track/{track["spotify_id"]} \n
+            Popularity Score : {track["popularity_score"]}
+            """
+    )

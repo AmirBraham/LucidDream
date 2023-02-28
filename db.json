@@ -1,1 +1,11 @@
-{"_default": {"0": {"spotify_id": "6jRq8gaZhMUyy5RclRPcAf", "name": "hot girl bummer", "artist": "blackbear", "popularity_score": 75, "uploaded": false}}}
+{
+    "_default": {
+        "0": {
+            "spotify_id": "6jRq8gaZhMUyy5RclRPcAf",
+            "name": "hot girl bummer",
+            "artist": "blackbear",
+            "popularity_score": 75,
+            "uploaded": false
+        }
+    }
+}

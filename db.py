@@ -32,7 +32,7 @@ def setTrackUploadState(track, state: bool):
         return
     Tracks = Query()
     db.update({"uploaded": state}, Tracks["youtube_id"] == track["youtube_id"])
-
+    return True
 
 def doesTrackExist(track: Track) -> bool:
     Track = Query()
