@@ -1,11 +1,15 @@
 from slowedreverb import slowReverb
 from utils import setupDirectories, setupEnvironmentVariables, checkFFmpeg, MP4ToMP3
-from db import getNewTracks, setTrackUploadState, setTrackYoutubeID
+from db import getNewTracks, setTrackUploadState, setTrackYoutubeID , updateDB
 from spotify import fetchPlaylistSongs, addSongsToDB
 from youtube import Download, Search
 from giphyapi import searchAndDownloadGif
 import os
+from os.path import isfile, join
 
+
+
+updateDB()
 print("setting up directories")
 setupDirectories()
 if not ("ON_HEROKU" in os.environ):
@@ -21,13 +25,9 @@ tracks = getNewTracks()
 if len(tracks) == 0:
     print("no song to upload , exiting.")
     quit()
-from os.path import isfile, join
-from os import listdir
-import cv2
-
 
 def setupFilesPermissions():
-    onlyfiles = [f for f in listdir(".") if isfile(join("./", f))]
+    onlyfiles = [f for f in os.listdir(".") if isfile(join("./", f))]
     for file in onlyfiles:
         os.chmod(file, 0o777)
 
@@ -36,7 +36,6 @@ if "ON_HEROKU" in os.environ:
     setupFilesPermissions()
 
 track = tracks[0]
-print(track)
 track_link, track_id = Search(track["name"] + " " + track["artist"], 0)
 if track_link == "":
     print("can't find youtube link , exiting.")
@@ -71,3 +70,14 @@ os.system(
 
 print("done uploading , setting upload state to true")
 setTrackUploadState(track, True)
+
+print("Done !  added the following track : \n")
+
+print(f"""
+        Track Details : \n
+        Name : {track["name"]} \n
+        Artist : {track["artist"]} \n
+        Youtube link : https://www.youtube.com/watch?v={track["youtube_id"]} \n
+        Spotify Link : https://open.spotify.com/track/{track["spotify_id"]} \n
+        Popularity Score : {track["popularity_score"]}
+        """)

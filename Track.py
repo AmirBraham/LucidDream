@@ -33,3 +33,12 @@ class Track:
 
     def getPopularityScore(self) -> int:
         return self.popularity_score
+    def __str__(self) -> str:
+        return f"""
+        Track Details : \n
+        Name : {self.getName()} \n
+        Artist : {self.getArtist()} \n
+        Youtube link : https://www.youtube.com/watch?v={self.getYoutubeID()} \n
+        Spotify Link : https://open.spotify.com/track/{self.getSpotifyID()} \n
+        Popularity Score : {self.getPopularityScore()}
+        """

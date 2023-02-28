@@ -33,7 +33,6 @@ def setTrackUploadState(track, state: bool):
 
 def doesTrackExist(track: Track) -> bool:
     Track = Query()
-
     result = db.search(Track["spotify_id"] == track.getSpotifyID())
     return len(result) >= 1
 
@@ -44,7 +43,14 @@ def getNewTracks() -> List[Track]:
     result = db.search(Track["uploaded"] == False)
     return result
 
-
+def updateDB():
+    Track = Query()
+    # setting upload state to true for tracks with youtube_id 
+    res = db.search((Track["youtube_id"] != "") & (Track["uploaded"] == False))
+    for track in res:
+        setTrackUploadState(track=track,state=True)
+    #removing tracks with uploaded state true and youtube id none
+    Track = Query()
+    db.remove((Track["youtube_id"] == "") & (Track["uploaded"] == True))
 if __name__ == "__main__":
-    tracks = getNewTracks()
-    print(tracks)
+    updateDB()
