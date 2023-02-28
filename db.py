@@ -27,6 +27,9 @@ def setTrackYoutubeID(track: Track, youtubeID: str):
 
 
 def setTrackUploadState(track, state: bool):
+    if(not "youtube_id" in track):
+        print("can't change upload state , probably failed to upload due to 'quota exceeded' reasons")
+        return
     Tracks = Query()
     db.update({"uploaded": state}, Tracks["youtube_id"] == track["youtube_id"])
 
