@@ -3,6 +3,7 @@ output
 __pycache__
 .env
 song.mp3
+.DS_Store
 .cache
 oauth.json
 songTEMP_MPY_wvf_snd.mp3
