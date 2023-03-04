@@ -5,7 +5,7 @@ pysndfx
 pytube
 youtube-search-python
 google-api-python-client
-tinydb
+pymongo
 httplib2
 python-dotenv
 pandas

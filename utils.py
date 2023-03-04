@@ -1,8 +1,11 @@
+import json
 from dotenv import load_dotenv
 import os
 from pathlib import Path
 import subprocess
 from moviepy.editor import *
+from os.path import isfile, join
+
 
 def checkFFmpeg():
     try:
@@ -11,6 +14,7 @@ def checkFFmpeg():
         )
         result = result.stdout
         # if we reached this line of code , it means success
+        print("found ffmpeg , starting process")
         return True
     except:
         print("ffmpeg not found, exiting..")
@@ -30,7 +34,7 @@ envPath = Path(".env")
 
 def setupEnvironmentVariables():
 
-    giphyApikey = ""
+    mongoDBkey = ""
     spotifyApiKey = ""
     youtubeApiKey = ""
 
@@ -41,14 +45,15 @@ def setupEnvironmentVariables():
             return False
         spotifyApiKey = input("Please choose spotify api key : \n")
         youtubeApiKey = input("Please choose youtube api key : \n")
-        giphyApikey = input("Please choose giphy api key : \n")
+        mongoDBkey = input("Please choose mongodb key : \n")
         f = open(".env", "a")
         f.writelines(
-            [
-                "giphy_api=" + giphyApikey,
-                "\nyoutube_api=" + youtubeApiKey,
-                "\nspotify_api=" + spotifyApiKey,
-            ]
+            '\n'.join(
+                [
+                    'MONGO_DB=' + mongoDBkey,
+                    'YOUTUBE_SECRET=' + youtubeApiKey,
+                    'SPOTIPY_CLIENT_SECRET=' + spotifyApiKey,
+                ]) + '\n'
         )
 
 
@@ -56,17 +61,15 @@ load_dotenv()
 
 
 def getSpotifyApiKey(key=""):
-    if key == "":
-        api_key = os.environ.get("spotify_api")
-        if api_key != None:
-            return api_key
-    result = key if key != "" else False
-    return result
+    if(key != ""):
+        return key
+    api_key = os.environ.get("SPOTIPY_CLIENT_SECRET")
+    return api_key
 
 
-def getGiphyApiKey(key=""):
-    if key == "":
-        api_key = os.environ.get("giphy_api")
+def getMongoDBKey(key=""):
+    if key == "" or key == None:
+        api_key = os.environ.get("MONGO_DB")
         if api_key != None:
             return api_key
     result = key if key != "" else False
@@ -74,10 +77,12 @@ def getGiphyApiKey(key=""):
 
 
 def setupDirectories():
+    print("setting up directories")
     try:
         os.makedirs("gifs")
     except FileExistsError:
         # directory already exists
+        print("gifs directory exists")
         pass
     try:
         os.makedirs("output")
@@ -86,14 +91,10 @@ def setupDirectories():
         pass
 
 
-import json
-
-
 def generateYoutubeClientSecret():
     f = open("client_secrets.json")
     data = json.load(f)
-    if "ON_HEROKU" in os.environ:
-        data["web"]["client_secret"] = os.environ.get("YOUTUBE_SECRET")
+    data["web"]["client_secret"] = os.environ.get("YOUTUBE_SECRET")
     with open("client_secrets.json", "w") as outfile:
         outfile.write(json.dumps(data))
 
@@ -105,6 +106,12 @@ def MP4ToMP3(mp4, mp3):
     FILETOCONVERT.write_audiofile(mp3)
     FILETOCONVERT.close()
     os.remove(mp4)
+
+
+def setupFilesPermissions():
+    onlyfiles = [f for f in os.listdir(".") if isfile(join("./", f))]
+    for file in onlyfiles:
+        os.chmod(file, 0o777)
 
 
 if __name__ == "__main__":

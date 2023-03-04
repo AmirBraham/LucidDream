@@ -6,17 +6,16 @@ import os
 import random
 import sys
 import time
-
 from apiclient.discovery import build
 from apiclient.errors import HttpError
 from apiclient.http import MediaFileUpload
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
-from oauth2client.tools import argparser, run_flow
+from oauth2client.tools import  run_flow
+import argparse
+import Track
+from db import setTrackUploadState,blacklistTrack,setTrackYoutubeID
 
-"""
-python upload_video.py --file "output/song.mp4" --title category="10" "song" --privacyStatus="private"
-"""
 
 # Explicitly tell the underlying HTTP transport library not to retry, since
 # we are handling retry logic ourselves.
@@ -102,7 +101,7 @@ def get_authenticated_service(args):
     )
 
 
-def initialize_upload(youtube, options):
+def initialize_upload(track,youtube, options):
     tags = None
     if options.keywords:
         tags = options.keywords.split(",")
@@ -135,12 +134,12 @@ def initialize_upload(youtube, options):
         media_body=MediaFileUpload(options.file, chunksize=-1, resumable=True),
     )
 
-    resumable_upload(insert_request)
+    resumable_upload(track,insert_request)
 
 
 # This method implements an exponential backoff strategy to resume a
 # failed upload.
-def resumable_upload(insert_request):
+def resumable_upload(track,insert_request):
     response = None
     error = None
     retry = 0
@@ -151,7 +150,25 @@ def resumable_upload(insert_request):
             if response is not None:
                 if "id" in response:
                     print("Video id " + response["id"] + " was successfully uploaded.")
+                    setTrackYoutubeID(track=track,youtubeID=response["id"])
+                    print("done uploading , setting upload state to true")
+
+                    setTrackUploadState(track=track,state=True)
+                    print("Done !  added the following track : \n")
+                    print(
+                        f"""
+                            Track Details : \n
+                            Name : {track["name"]} \n
+                            Artist : {track["artist"]} \n
+                            Youtube link : https://www.youtube.com/watch?v={track["youtube_id"]} \n
+                            Spotify Link : https://open.spotify.com/track/{track["spotify_id"]} \n
+                            Popularity Score : {track["popularity_score"]} \n
+                            Blacklisted : {track['blacklisted']}
+                            """
+                    )
                 else:
+                    print("failed to upload , blacklisting track just in case")
+                    blacklistTrack(track=track)
                     exit("The upload failed with an unexpected response: %s" % response)
         except HttpError as e:
             if e.resp.status in RETRIABLE_STATUS_CODES:
@@ -176,34 +193,21 @@ def resumable_upload(insert_request):
             time.sleep(sleep_seconds)
 
 
-if __name__ == "__main__":
-    argparser.add_argument("--file", required=True, help="Video file to upload")
-    argparser.add_argument("--title", help="Video title", default="Test Title")
-    argparser.add_argument(
-        "--description", help="Video description", default="Test Description"
-    )
-    argparser.add_argument(
-        "--category",
-        default="22",
-        help="Numeric video category. "
-        + "See https://developers.google.com/youtube/v3/docs/videoCategories/list",
-    )
-    argparser.add_argument(
-        "--keywords", help="Video keywords, comma separated", default=""
-    )
-    argparser.add_argument(
-        "--privacyStatus",
-        choices=VALID_PRIVACY_STATUSES,
-        default=VALID_PRIVACY_STATUSES[0],
-        help="Video privacy status.",
-    )
-    args = argparser.parse_args()
-    print("args : ", args.title)
+
+def upload(track:Track,filename:str,title:str,category:int,description:str,privacyStatus:str="public") -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--file")
+    parser.add_argument("--category")
+    parser.add_argument("--title")
+    parser.add_argument("--description")
+    parser.add_argument("--privacyStatus")
+    args = parser.parse_args(["--file",filename,"--category",category,"--title",title,"--description",description,"--privacyStatus",privacyStatus])
     if not os.path.exists(args.file):
         exit("Please specify a valid file using the --file= parameter.")
 
     youtube = get_authenticated_service(args)
     try:
-        initialize_upload(youtube, args)
+        initialize_upload(track,youtube, args)
     except HttpError as e:
         print("An HTTP error " + str(e.resp.status) + "occurred:\n " + e.content)
+
