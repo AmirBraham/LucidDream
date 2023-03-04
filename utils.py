@@ -93,7 +93,10 @@ def setupDirectories():
 def generateYoutubeClientSecret(filename):
     f = open(filename)
     data = json.load(f)
-    data["web"]["client_secret"] = os.environ.get("YOUTUBE_SECRET")
+    if("web" in data):
+        data["web"]["client_secret"] = os.environ.get("YOUTUBE_SECRET")
+    else:
+        data["client_secret"] = os.environ.get("YOUTUBE_SECRET")
     with open(filename, "w") as outfile:
         outfile.write(json.dumps(data))
     f.close()
