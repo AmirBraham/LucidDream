@@ -70,7 +70,7 @@ def getSpotifyApiKey(key=""):
 def getMongoDBKey(key=""):
     if key == "" or key == None:
         api_key = os.environ.get("MONGO_DB")
-        if api_key != None:
+        if api_key is not None:
             return api_key
     result = key if key != "" else False
     return result
@@ -86,6 +86,11 @@ def setupDirectories():
         pass
     try:
         os.makedirs("output")
+    except FileExistsError:
+        # directory already exists
+        pass
+    try:
+        os.makedirs("gif")
     except FileExistsError:
         # directory already exists
         pass

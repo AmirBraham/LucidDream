@@ -25,7 +25,7 @@ def Download(link:str, title:str) -> bool:
     except:
         print("An error has occurred , trying another link")
         newlink = Search(title, 1)[0]
-        if(link != None and newlink != link):
+        if(link is not None and newlink != link):
             Download(link=link, title=title)
         else:
             print("failed to find youtube link for spotify song : " + title)

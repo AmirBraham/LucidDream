@@ -11,8 +11,7 @@ from apiclient.errors import HttpError
 from apiclient.http import MediaFileUpload
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
-from oauth2client.tools import  run_flow
-import argparse
+from oauth2client.tools import  argparser, run_flow
 import Track
 from db import setTrackUploadState,blacklistTrack,setTrackYoutubeID
 
@@ -194,14 +193,13 @@ def resumable_upload(track,insert_request):
 
 
 
-def upload(track:Track,filename:str,title:str,category:int,description:str,privacyStatus:str="public") -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--file")
-    parser.add_argument("--category")
-    parser.add_argument("--title")
-    parser.add_argument("--description")
-    parser.add_argument("--privacyStatus")
-    args = parser.parse_args(["--file",filename,"--category",category,"--title",title,"--description",description,"--privacyStatus",privacyStatus])
+def upload(track:Track,filename:str,title:str,category:str,description:str,privacyStatus:str="public") -> None:
+    argparser.add_argument("--file")
+    argparser.add_argument("--category")
+    argparser.add_argument("--title")
+    argparser.add_argument("--description")
+    argparser.add_argument("--privacyStatus")
+    args = argparser.parse_args(["--file",filename,"--category",category,"--title",title,"--description",description,"--privacyStatus",privacyStatus])
     if not os.path.exists(args.file):
         exit("Please specify a valid file using the --file= parameter.")
 

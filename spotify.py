@@ -10,8 +10,8 @@ from typing import List
 
 def fetchPlaylistSongs(PLAYLIST_ID):
     CLIENT_ID = "690df2c806074798a21b1c95eaa30c99"
-    spotifyApiKey = getSpotifyApiKey("1f7c008679bd44a28888b147e467c353")
-    assert spotifyApiKey != None
+    spotifyApiKey = getSpotifyApiKey()
+    assert spotifyApiKey is not None
     sp = spotipy.Spotify(
         client_credentials_manager=SpotifyClientCredentials(
             client_id=CLIENT_ID, client_secret=spotifyApiKey

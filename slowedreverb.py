@@ -55,7 +55,7 @@ def gifToImages(gif_path):
         for f in files:
             os.remove(f)
 
-    truncate("gifs")
+    truncate("gif")
 
     for frame in range(1, imageObject.n_frames):
 
@@ -64,7 +64,7 @@ def gifToImages(gif_path):
             imageObject, top=50, bottom=50, right=100, left=100, color=(0, 0, 0)
         )
         im_new.resize((450, 350))
-        im_new.save("gifs/" + str(frame) + ".png")
+        im_new.save("gif/" + str(frame) + ".png")
 
 
 def slowReverb(audio, output, gif_path):

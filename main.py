@@ -1,17 +1,19 @@
 import random
 from slowedreverb import slowReverb
 from utils import setupDirectories, setupEnvironmentVariables, checkFFmpeg, MP4ToMP3, setupFilesPermissions
-from db import setUpDatabase, getNewTrack, setTrackUploadState, setTrackYoutubeID, blacklistTrack
+from db import setUpDatabase, getNewTrack, blacklistTrack
 from spotify import fetchPlaylistSongs, addSongsToDB
 from youtube import Download, Search
 import os
 from upload_video import upload
-setUpDatabase()
-setupDirectories()
+
 if not ("ON_HEROKU" in os.environ):
     setupEnvironmentVariables()
     assert checkFFmpeg()
     setupFilesPermissions()
+
+setUpDatabase()
+setupDirectories()
 PLAYLIST_ID = "7Lg2IGZJGAvGYqqUEuvqkU"  # my playlist id
 SONGS = fetchPlaylistSongs(PLAYLIST_ID)
 addSongsToDB(SONGS)
@@ -19,7 +21,6 @@ track = getNewTrack()
 if track == None:
     print("no song to upload , exiting.")
     quit()
-
 
 track_link, track_id = Search(track["name"] + " " + track["artist"], 0)
 if track_link == "":
@@ -30,15 +31,12 @@ downloadStatus = Download(
     track_link, title=track["name"] + " " + track["artist"])
 if(not downloadStatus):
     blacklistTrack(track)
-
     quit()
-track["youtube_id"] = track_id
 print("converting to mp3")
 MP4ToMP3("youtubeDownloads/song.mp4", "song.mp3")
 print("searching for gif ")
 print("applying slowed reverb")
 print("post processing video")
-
 
 random_file = random.choice(os.listdir("gifs"))
 slowReverb(
@@ -52,4 +50,4 @@ privacyStatus = "public"
 description = ""
 
 print("starting upload")
-upload(track=track,title=songName,filename="./output/slowed-reverb.mp4",category=10,description=description,privacyStatus="public")
+upload(track=track,title=songName,filename="./output/slowed-reverb.mp4",category="10",description=description,privacyStatus="public")
