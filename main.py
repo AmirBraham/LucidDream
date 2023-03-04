@@ -59,7 +59,6 @@ slowReverb(
     output="./output/slowed-reverb.mp4",
     gif_path="./gifs/"+random_file,
 )
-quit()
 
 songName = track["name"] + " - " + track["artist"] + " (slowed & reverb)"
 privacyStatus = "public"
