@@ -6,6 +6,7 @@ from spotify import fetchPlaylistSongs, addSongsToDB
 from youtube import Download, Search
 import os
 from upload_video import upload
+import subprocess as sp
 
 if not ("ON_HEROKU" in os.environ):
     setupEnvironmentVariables()
@@ -53,4 +54,10 @@ print("starting upload")
 if("ON_HEROKU" in os.environ):
     generateYoutubeClientSecret("client_secrets.json")
     generateYoutubeClientSecret("main.py-oauth2.json")
-upload(track=track,title=songName,filename="./output/slowed-reverb.mp4",category="10",description=description,privacyStatus="public")
+
+
+print("preparing mp4 video for youtube")
+sp.call("ffmpeg -i ./output/slowed-reverb.mp4 -c:v libx264 -preset slow -crf 18 -c:a copy -pix_fmt yuv420p ./output/final.mp4",shell=True)
+
+upload(track=track,title=songName,filename="./output/final.mp4",category="10",description=description,privacyStatus="public")
+
