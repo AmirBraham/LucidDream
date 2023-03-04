@@ -55,5 +55,6 @@ def updateDB():
     #removing tracks with uploaded state true and youtube id none
     Track = Query()
     db.remove((Track["youtube_id"] == "") & (Track["uploaded"] == True))
+    
 if __name__ == "__main__":
     updateDB()

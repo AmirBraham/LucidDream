@@ -1,9 +1,9 @@
+import random
 from slowedreverb import slowReverb
 from utils import setupDirectories, setupEnvironmentVariables, checkFFmpeg, MP4ToMP3
 from db import getNewTracks, setTrackUploadState, setTrackYoutubeID, updateDB
 from spotify import fetchPlaylistSongs, addSongsToDB
 from youtube import Download, Search
-from giphyapi import searchAndDownloadGif
 import os
 from os.path import isfile, join
 
@@ -26,6 +26,7 @@ if len(tracks) == 0:
     quit()
 
 
+
 def setupFilesPermissions():
     onlyfiles = [f for f in os.listdir(".") if isfile(join("./", f))]
     for file in onlyfiles:
@@ -43,20 +44,22 @@ if track_link == "":
 print("downloading track from youtube")
 
 Download(track_link, title=track["name"] + " " + track["artist"])
+track["youtube_id"] = track_id
 print("converting to mp3")
 MP4ToMP3("youtubeDownloads/song.mp4", "song.mp3")
 print("searching for gif ")
-searchAndDownloadGif("anime")
 print("applying slowed reverb")
 
 print("post processing video")
 
+
+random_file=random.choice(os.listdir("gifs"))
 slowReverb(
     audio="./song.mp3",
     output="./output/slowed-reverb.mp4",
-    gif_path="./originalGif.gif",
+    gif_path="./gifs/"+random_file,
 )
-
+quit()
 
 songName = track["name"] + " - " + track["artist"] + " (slowed & reverb)"
 privacyStatus = "public"
