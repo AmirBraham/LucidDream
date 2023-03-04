@@ -106,7 +106,7 @@ def slowReverb(audio, output, gif_path):
     print(f"Converted {filename}")
     audio_clip = AudioFileClip(temp_audio_path)
 
-    video_clip = ImageSequenceClip("gifs", fps=5)
+    video_clip = ImageSequenceClip("gif", fps=5)
     num_loops = math.ceil(audio_clip.duration / video_clip.duration)
     video_clip2 = video_clip.loop(n=num_loops)
     video_clip3 = video_clip2.set_audio(audio_clip)

@@ -1,6 +1,6 @@
 import random
 from slowedreverb import slowReverb
-from utils import setupDirectories, setupEnvironmentVariables, checkFFmpeg, MP4ToMP3, setupFilesPermissions
+from utils import setupDirectories, setupEnvironmentVariables, checkFFmpeg, MP4ToMP3, setupFilesPermissions,generateYoutubeClientSecret
 from db import setUpDatabase, getNewTrack, blacklistTrack
 from spotify import fetchPlaylistSongs, addSongsToDB
 from youtube import Download, Search
@@ -13,7 +13,6 @@ if not ("ON_HEROKU" in os.environ):
     setupFilesPermissions()
 
 setUpDatabase()
-setupDirectories()
 PLAYLIST_ID = "7Lg2IGZJGAvGYqqUEuvqkU"  # my playlist id
 SONGS = fetchPlaylistSongs(PLAYLIST_ID)
 addSongsToDB(SONGS)
@@ -21,6 +20,7 @@ track = getNewTrack()
 if track == None:
     print("no song to upload , exiting.")
     quit()
+setupDirectories()
 
 track_link, track_id = Search(track["name"] + " " + track["artist"], 0)
 if track_link == "":
@@ -50,4 +50,7 @@ privacyStatus = "public"
 description = ""
 
 print("starting upload")
+if("ON_HEROKU" in os.environ):
+    generateYoutubeClientSecret("client_secrets.json")
+    generateYoutubeClientSecret("main.py-oauth2.json")
 upload(track=track,title=songName,filename="./output/slowed-reverb.mp4",category="10",description=description,privacyStatus="public")

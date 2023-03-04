@@ -199,6 +199,8 @@ def upload(track:Track,filename:str,title:str,category:str,description:str,priva
     argparser.add_argument("--title")
     argparser.add_argument("--description")
     argparser.add_argument("--privacyStatus")
+    argparser.add_argument("--keywords", help="Video keywords, comma separated",
+    default="")
     args = argparser.parse_args(["--file",filename,"--category",category,"--title",title,"--description",description,"--privacyStatus",privacyStatus])
     if not os.path.exists(args.file):
         exit("Please specify a valid file using the --file= parameter.")

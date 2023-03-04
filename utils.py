@@ -79,12 +79,6 @@ def getMongoDBKey(key=""):
 def setupDirectories():
     print("setting up directories")
     try:
-        os.makedirs("gifs")
-    except FileExistsError:
-        # directory already exists
-        print("gifs directory exists")
-        pass
-    try:
         os.makedirs("output")
     except FileExistsError:
         # directory already exists
@@ -96,13 +90,12 @@ def setupDirectories():
         pass
 
 
-def generateYoutubeClientSecret():
-    f = open("client_secrets.json")
+def generateYoutubeClientSecret(filename):
+    f = open(filename)
     data = json.load(f)
     data["web"]["client_secret"] = os.environ.get("YOUTUBE_SECRET")
-    with open("client_secrets.json", "w") as outfile:
+    with open(filename, "w") as outfile:
         outfile.write(json.dumps(data))
-
     f.close()
 
 
