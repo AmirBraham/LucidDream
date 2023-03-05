@@ -151,7 +151,7 @@ def resumable_upload(track,insert_request):
                     print("Video id " + response["id"] + " was successfully uploaded.")
                     setTrackYoutubeID(track=track,youtubeID=response["id"])
                     print("done uploading , setting upload state to true")
-
+                    track["youtube_id"] = response["id"]
                     setTrackUploadState(track=track,state=True)
                     print("Done !  added the following track : \n")
                     print(
@@ -159,7 +159,7 @@ def resumable_upload(track,insert_request):
                             Track Details : \n
                             Name : {track["name"]} \n
                             Artist : {track["artist"]} \n
-                            Youtube link : https://www.youtube.com/watch?v={track["youtube_id"]} \n
+                            Youtube link : https://www.youtube.com/watch?v={response["id"]} \n
                             Spotify Link : https://open.spotify.com/track/{track["spotify_id"]} \n
                             Popularity Score : {track["popularity_score"]} \n
                             Blacklisted : {track['blacklisted']}
