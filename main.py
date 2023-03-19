@@ -33,8 +33,6 @@ downloadStatus = Download(
 if(not downloadStatus):
     blacklistTrack(track)
     quit()
-print("converting to mp3")
-MP4ToMP3("youtubeDownloads/song.mp4", "song.mp3")
 print("searching for gif ")
 print("applying slowed reverb")
 print("post processing video")
