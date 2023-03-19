@@ -30,9 +30,11 @@ if track_link == "":
 print("downloading track from youtube")
 downloadStatus = Download(
     track_link, title=track["name"] + " " + track["artist"])
+
 if(not downloadStatus):
     blacklistTrack(track)
     quit()
+
 print("searching for gif ")
 print("applying slowed reverb")
 print("post processing video")
@@ -53,9 +55,7 @@ if("ON_HEROKU" in os.environ):
     generateYoutubeClientSecret("client_secrets.json")
     generateYoutubeClientSecret("main.py-oauth2.json")
 
-
 print("preparing mp4 video for youtube")
 sp.call('ffmpeg -i ./output/slowed-reverb.mp4 -c:v libx264  -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" -preset slow -crf 18 -c:a copy -pix_fmt yuv420p ./output/final.mp4',shell=True)
-
 upload(track=track,title=songName,filename="./output/final.mp4",category="10",description=description,privacyStatus="public")
 

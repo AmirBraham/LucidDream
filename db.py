@@ -9,11 +9,13 @@ from os import environ
 
 collection: Collection[Track] = None
 
+
 def connectToDB(username: str, password: str) -> Collection:
     url = f"mongodb+srv://{username}:{password}@songs.oexwbqj.mongodb.net/?retryWrites=true&w=majority"
     client: MongoClient = MongoClient(url, server_api=ServerApi('1'))
     db: Collection = client["songs"]["songs"]
     return db
+
 
 def setUpDatabase() -> None:
     global collection
@@ -29,9 +31,6 @@ def setUpDatabase() -> None:
     # removing tracks with uploaded state true and youtube id none
     filterTracks = {'youtube_id': '', 'uploaded': True}
     collection.delete_many(filter=filterTracks)
-
-
-
 
 
 def doesTrackExist(track: Track) -> bool:
@@ -61,16 +60,14 @@ def setTrackUploadState(track, state: bool) -> bool:
 
 def getNewTrack() -> Track:
     # returns unploadedTracks
-    query = {'uploaded' : False , 'blacklisted' : False}
+    query = {'uploaded': False, 'blacklisted': False}
     result = collection.find_one(filter=query)
     return result
 
 
-
-
 def blacklistTrack(track: Track) -> None:
     # gte : greater than or equal to len(' ')
+    print("blacklisting track : " + track['name'] + "-" + track['artist'])
     query = {'spotify_id': track['spotify_id']}
     track = collection.find_one_and_update(
         filter=query, update={'$set': {"blacklisted": True}})
-
