@@ -112,9 +112,6 @@ def slowReverb(audio, output, imagePath):
         num_loops = math.ceil(audio_clip.duration / video_clip.duration)
         video_clip2 = video_clip.loop(n=num_loops)
         video_clip3 = video_clip2.set_audio(audio_clip)
-        audio_clip.close()
-        video_clip.close()
-        video_clip2.close()
         print("Saving video...")
         video_clip3.write_videofile(output, fps=5, verbose=False, logger=None)
     else:
@@ -124,13 +121,13 @@ def slowReverb(audio, output, imagePath):
         black_image = (ImageClip("black.jpg"))
         video_clip3 = CompositeVideoClip([black_image, video_clip2.set_position("center")])
         video_clip3 = video_clip3.set_duration(audio_clip.duration)
-        audio_clip.close()
-        video_clip.close()
-        video_clip2.close()
+
         print("Saving video...")
         video_clip3.write_videofile(output,fps=1,verbose=False, logger=None)
 
-
+    audio_clip.close()
+    video_clip.close()
+    video_clip2.close()
     os.remove(temp_audio_path)
     os.remove("tmp.wav")
     video_clip3.close()
