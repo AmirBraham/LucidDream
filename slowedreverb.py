@@ -118,9 +118,7 @@ def slowReverb(audio, output, imagePath):
         video_clip = ImageClip(imagePath,duration=audio_clip.duration)
         video_clip  = video_clip.set_duration(audio_clip.duration)
         video_clip2 = video_clip.set_audio(audio_clip)
-        
-
-        black_image = (ImageClip("black_picture_1920x1080.jpg"))
+        black_image = (ImageClip("black.jpg"))
         video_clip3 = CompositeVideoClip([black_image, video_clip2.set_position("center")])
         video_clip3 = video_clip3.set_duration(audio_clip.duration)
         print("Saving video...")
