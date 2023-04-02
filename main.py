@@ -60,5 +60,5 @@ if("ON_HEROKU" in os.environ):
 
 print("preparing mp4 video for youtube")
 sp.call('ffmpeg -i ./output/slowed-reverb.mp4 -c:v libx264  -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" -preset slow -crf 18 -c:a copy -pix_fmt yuv420p ./output/final.mp4',shell=True)
-#upload(track=track,title=songName,filename="./output/final.mp4",category="10",description=description,privacyStatus="public")
+upload(track=track,title=songName,filename="./output/final.mp4",category="10",description=description,privacyStatus="public")
 
