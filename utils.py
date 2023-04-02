@@ -7,6 +7,9 @@ from moviepy.editor import *
 from os.path import isfile, join
 import requests
 
+from PIL import Image
+
+
 
 def checkFFmpeg():
     try:
@@ -127,6 +130,14 @@ def downloadImage(url):
                 break
 
             handle.write(block)
+def resizeImage(path,factor=2):
+    image = Image.open(path)
+    width, height = image.size
+    new_size = (int(width/factor), int(height/factor)) # factor the size
+    resized_image = image.resize(new_size)
+# Save the resized image
+    resized_image.save('output.jpg')
+
 def getFileExtension(file_path):
     file_name, file_ext = [file_path if "." not in file_path else file_path.split(".")[0], "" if "." not in file_path else file_path[file_path.find(".") + 1:]]
     return file_ext
