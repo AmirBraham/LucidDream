@@ -7,3 +7,4 @@ class Track(TypedDict):
     youtube_id : str
     uploaded : bool
     blacklisted:bool
+    coverURL:bool

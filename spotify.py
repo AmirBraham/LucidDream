@@ -34,7 +34,8 @@ def fetchPlaylistSongs(PLAYLIST_ID):
                     youtube_id="",
                     popularity_score=track["popularity"],
                     uploaded=False,
-                    blacklisted=False
+                    blacklisted=False,
+                    coverURL=track['album']['images'][0]['url']
                 )
                 SONGS.append(track)
 

@@ -10,8 +10,8 @@ import math
 import os
 import glob
 from PIL import Image
-from moviepy.editor import ImageSequenceClip
-
+from moviepy.editor import ImageSequenceClip , ImageClip,CompositeVideoClip
+from utils import getFileExtension
 
 def get_num_frames(f: sf.SoundFile) -> int:
     # On some platforms and formats, f.frames == -1L.
@@ -67,10 +67,12 @@ def gifToImages(gif_path):
         im_new.save("gif/" + str(frame) + ".png")
 
 
-def slowReverb(audio, output, gif_path):
+def slowReverb(audio, output, imagePath):
     filename = audio
     temp_audio_path = "output/song.wav"
-    gifToImages(gif_path)
+    if(getFileExtension(imagePath) == ".gif"):
+        print("applying a gif")
+        gifToImages(imagePath)
 
     if ".wav" not in audio:
         print("Audio needs to be .wav! Converting...")
@@ -105,16 +107,31 @@ def slowReverb(audio, output, gif_path):
     sf.write(temp_audio_path, effected, sample_rate)
     print(f"Converted {filename}")
     audio_clip = AudioFileClip(temp_audio_path)
+    if(getFileExtension(imagePath) == ".gif"):
+        video_clip = ImageSequenceClip("gif", fps=5)
+        num_loops = math.ceil(audio_clip.duration / video_clip.duration)
+        video_clip2 = video_clip.loop(n=num_loops)
+        video_clip3 = video_clip2.set_audio(audio_clip)
+        print("Saving video...")
+        video_clip3.write_videofile(output, fps=5, verbose=False, logger=None)
+    else:
+        video_clip = ImageClip(imagePath,duration=audio_clip.duration)
+        video_clip  = video_clip.set_duration(audio_clip.duration)
+        video_clip2 = video_clip.set_audio(audio_clip)
+        
 
-    video_clip = ImageSequenceClip("gif", fps=5)
-    num_loops = math.ceil(audio_clip.duration / video_clip.duration)
-    video_clip2 = video_clip.loop(n=num_loops)
-    video_clip3 = video_clip2.set_audio(audio_clip)
-    print("Saving video...")
-    video_clip3.write_videofile(output, fps=5, verbose=False, logger=None)
+        black_image = (ImageClip("black_picture_1920x1080.jpg"))
+        video_clip3 = CompositeVideoClip([black_image, video_clip2.set_position("center")])
+        video_clip3 = video_clip3.set_duration(audio_clip.duration)
+        print("Saving video...")
+        video_clip3.write_videofile(output,fps=5,verbose=False, logger=None)
+
+
+
     audio_clip.close()
     video_clip.close()
     video_clip2.close()
     os.remove(temp_audio_path)
     os.remove("tmp.wav")
-    return video_clip3
+    video_clip3.close()
+

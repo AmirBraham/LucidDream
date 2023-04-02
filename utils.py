@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 from moviepy.editor import *
 from os.path import isfile, join
+import requests
 
 
 def checkFFmpeg():
@@ -115,5 +116,20 @@ def setupFilesPermissions():
         os.chmod(file, 0o777)
 
 
+def downloadImage(url):
+    with open('img.jpg', 'wb') as handle:
+        response = requests.get(url, stream=True)
+        if not response.ok:
+            print(response)
+
+        for block in response.iter_content(1024):
+            if not block:
+                break
+
+            handle.write(block)
+def getFileExtension(file_path):
+    file_name, file_ext = [file_path if "." not in file_path else file_path.split(".")[0], "" if "." not in file_path else file_path[file_path.find(".") + 1:]]
+    return file_ext
+
 if __name__ == "__main__":
-    generateYoutubeClientSecret()
+    downloadImage("https://i.scdn.co/image/ab67616d0000b27372c5265c12fd8effdc006b75")

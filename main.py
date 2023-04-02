@@ -1,6 +1,6 @@
 import random
 from slowedreverb import slowReverb
-from utils import setupDirectories, setupEnvironmentVariables, checkFFmpeg, MP4ToMP3, setupFilesPermissions,generateYoutubeClientSecret
+from utils import setupDirectories, setupEnvironmentVariables, checkFFmpeg, MP4ToMP3,downloadImage, setupFilesPermissions,generateYoutubeClientSecret
 from db import setUpDatabase, getNewTrack, blacklistTrack
 from spotify import fetchPlaylistSongs, addSongsToDB
 from youtube import Download, Search
@@ -18,12 +18,14 @@ PLAYLIST_ID = "7Lg2IGZJGAvGYqqUEuvqkU"  # my playlist id
 SONGS = fetchPlaylistSongs(PLAYLIST_ID)
 addSongsToDB(SONGS)
 track = getNewTrack()
+print(track)
+
 if track == None:
     print("no song to upload , exiting.")
     quit()
 setupDirectories()
 
-track_link, track_id = Search(track["name"] + " " + track["artist"], 0)
+track_link, track_id = Search(track["name"] + " " + track["artist"])
 if track_link == "":
     print("can't find youtube link , exiting.")
     quit()
@@ -35,7 +37,8 @@ if(not downloadStatus):
     blacklistTrack(track)
     quit()
 
-print("searching for gif ")
+print("fetching Image ")
+downloadImage(track["coverURL"]) # saves image as img.jpg
 print("applying slowed reverb")
 print("post processing video")
 
@@ -43,7 +46,7 @@ random_file = random.choice(os.listdir("gifs"))
 slowReverb(
     audio="./song.mp3",
     output="./output/slowed-reverb.mp4",
-    gif_path="./gifs/"+random_file,
+    imagePath="img.jpg",
 )
 
 songName = track["name"] + " - " + track["artist"] + " (slowed & reverb)"
