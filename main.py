@@ -39,7 +39,7 @@ if(not downloadStatus):
 
 print("fetching Image ")
 downloadImage(track["coverURL"]) # saves image as img.jpg
-resizeImage("img.jpg")
+resizeImage("img.jpg",factor=1.2)
 print("applying slowed reverb")
 print("post processing video")
 random_file = random.choice(os.listdir("gifs"))
