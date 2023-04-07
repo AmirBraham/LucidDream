@@ -8,3 +8,4 @@ class Track(TypedDict):
     uploaded : bool
     blacklisted:bool
     coverURL:bool
+    album_name: str

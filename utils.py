@@ -79,6 +79,14 @@ def getMongoDBKey(key=""):
     result = key if key != "" else False
     return result
 
+def getGeniusKey(key=""):
+    if key == "" or key == None:
+        api_key = os.environ.get("GENIUS")
+        if api_key is not None:
+            return api_key
+    result = key if key != "" else False
+    return result
+
 
 def setupDirectories():
     print("setting up directories")

@@ -7,7 +7,7 @@ from youtube import Download, Search
 import os
 from upload_video import upload
 import subprocess as sp
-
+from lyrics import getLyrics
 if not ("ON_HEROKU" in os.environ):
     setupEnvironmentVariables()
     assert checkFFmpeg()
@@ -19,7 +19,6 @@ SONGS = fetchPlaylistSongs(PLAYLIST_ID)
 addSongsToDB(SONGS)
 track = getNewTrack()
 print(track)
-
 if track == None:
     print("no song to upload , exiting.")
     quit()
@@ -51,7 +50,15 @@ slowReverb(
 
 songName = track["name"] + " - " + track["artist"] + " (slowed & reverb)"
 privacyStatus = "public"
-description = ""
+lyrics = getLyrics(track=track)
+
+HASHTAGS = f'#slowed #reverb #{track["artist"]}'
+DISCLAIMER="DISCLAIMER : We do not own ANY rights to any of the music or footage we share, if you have a problem with our way, shoot us an email : amirbrahamm@gmail.com, and your video will be removed from the youtube platform within 24 hours."
+d = [HASHTAGS]
+if(lyrics != ""):
+    d.append("LYRICS : \n" + lyrics + "\n")
+d.append(DISCLAIMER)
+description = "\n".join(d)
 
 print("starting upload")
 if("ON_HEROKU" in os.environ):

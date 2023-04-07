@@ -35,7 +35,8 @@ def fetchPlaylistSongs(PLAYLIST_ID):
                     popularity_score=track["popularity"],
                     uploaded=False,
                     blacklisted=False,
-                    coverURL=track['album']['images'][0]['url']
+                    coverURL=track['album']['images'][0]['url'],
+                    album_name=track['album']['name']
                 )
                 SONGS.append(track)
 
