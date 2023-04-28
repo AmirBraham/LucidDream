@@ -23,18 +23,24 @@ def lyricsCleanup(lyrics) -> str:
 
 
 def getSongLyricsFromAlbum(track:Track) -> str:
-    f = open("album.json")
-    data = json.load(f)
-    tracks = data["tracks"]
-    lyrics = ""
-    for t in tracks:
-        if(t["song"]["title"] == track["name"]):
-            lyrics = t["song"]["lyrics"]
-    if(lyrics == ""):
-        print("couldn't find song in album ")
-        print(data)
-        return ""
-    lyrics = lyricsCleanup(lyrics=lyrics)
+    lyrics=""
+    try:
+        f = open("album.json")
+        data = json.load(f)
+        tracks = data["tracks"]
+        lyrics = ""
+        for t in tracks:
+            if(t["song"]["title"] == track["name"]):
+                lyrics = t["song"]["lyrics"]
+        if(lyrics == ""):
+            print("couldn't find song in album ")
+            print(data)
+            return ""
+        lyrics = lyricsCleanup(lyrics=lyrics)
+    except Exception as err:
+        print(err)
+        lyrics=""
+    
     return lyrics
 
 
