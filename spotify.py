@@ -19,36 +19,35 @@ def fetchPlaylistSongs(PLAYLIST_ID):
     )
     SONGS = []
     playlist = sp.playlist(PLAYLIST_ID)
-    print("fetching playlist songs")
-    while True:
-        while True:
-            items = playlist.get("tracks").get("items")
-            size = int(playlist["tracks"]["total"])
-            for i in range(size):
-                track = items[i].get("track")
-                artistName = track.get("artists")[0].get("name")
-                track = Track(
-                    name=track["name"],
-                    artist=artistName,
-                    spotify_id=track["id"],
-                    youtube_id="",
-                    popularity_score=track["popularity"],
-                    uploaded=False,
-                    blacklisted=False,
-                    coverURL=track['album']['images'][0]['url'],
-                    album_name=track['album']['name']
-                )
-                SONGS.append(track)
-
-            if playlist.get("tracks").get("next") == None:
-                break
-            playlist["tracks"] = playlist.get("tracks").get("next")
-        if playlist.get("next") == None:
-            break
-        playlist = playlist.get("next")
+    results = playlist["tracks"]
+    tracks = results["items"]
+    while results["next"]:
+        results = sp.next(results)
+        tracks.extend(results["items"])
+    print(len(tracks))
+    for item in tracks:
+        track = item.get("track")
+        artistName = track.get("artists")[0].get("name")
+        track = Track(
+            name=track["name"],
+            artist=artistName,
+            spotify_id=track["id"],
+            youtube_id="",
+            popularity_score=track["popularity"],
+            uploaded=False,
+            blacklisted=False,
+            coverURL=track['album']['images'][0]['url'],
+            album_name=track['album']['name']
+        )
+        SONGS.append(track)
+  
     return SONGS
-
 
 def addSongsToDB(songs: List[Track]) -> None:
     for song in songs:
         addTrack(song)
+
+
+if __name__ == "__main__":
+    PLAYLIST_ID = "7Lg2IGZJGAvGYqqUEuvqkU"  # my playlist id
+    SONGS = fetchPlaylistSongs(PLAYLIST_ID)
